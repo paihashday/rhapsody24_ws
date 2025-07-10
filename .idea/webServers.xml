@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="116135b5-8f36-488a-93fa-fa82b2f3b49d" name="rhapsody_server">
+        <fileTransfer accessType="SFTP" host="192.168.1.154" port="22" sshConfigId="1b985da9-0f74-44b1-9677-ec379771947f" sshConfig="pi@192.168.1.154:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" isUseSudo="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+      <webServer id="419dc88f-71ad-4070-b094-0f1be2a87c14" name="rhapsody_audio">
+        <fileTransfer accessType="SFTP" host="192.168.1.33" port="22" sshConfigId="955de77a-6bd0-4165-98fd-e896ef13b467" sshConfig="pi@192.168.1.33:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
