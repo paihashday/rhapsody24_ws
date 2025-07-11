@@ -48,22 +48,22 @@ def update_project(db: Session, project_id: int, project_update: project_schema.
         The updated project
     """
     db_project = db.query(Project).filter_by(id=project_id).first()
+
     if db_project is None:
         raise HTTPException(status_code=404, detail="Project not found")
 
-    if project_update is not None:
-        for var, value in vars(project_update).items():
-            if value is not None:
-                setattr(db_project, var, value)
-    else:
+    if project_update is None:
         raise HTTPException(status_code=400, detail="Bad request. You must provide valid update data")
 
     try:
+        for var, value in vars(project_update).items():
+            if value is not None:
+                setattr(db_project, var, value)
         db.commit()
         db.refresh(db_project)
-    except:
+    except Exception as e:
         db.rollback()
-        raise HTTPException(status_code=500, detail="Something went wrong")
+        raise HTTPException(status_code=500, detail=f"Something went wrong : {e}")
 
     return db_project
 

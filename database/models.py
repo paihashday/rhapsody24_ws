@@ -119,3 +119,17 @@ class DHT_sensor(Base):
 
     def __repr__(self):
         return f'<DHT_sensor(id={self.id}, name={self.name}, ip_address={self.ip_address}, project_id={self.project_id})>'
+
+
+class Color(Base):
+    __tablename__ = "colors"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(255), nullable=False)
+    red_value = Column(Integer, nullable=False)
+    green_value = Column(Integer, nullable=False)
+    blue_value = Column(Integer, nullable=False)
+    white_value = Column(Integer, nullable=True, default=None)
+
+    def __repr__(self):
+        return f'<Color(id={self.id}, name={self.name}, red_value={self.red_value}, green_value={self.green_value}, blue_value={self.blue_value}, white_value={self.white_value})>'

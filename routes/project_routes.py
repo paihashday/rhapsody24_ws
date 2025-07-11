@@ -9,7 +9,7 @@ from database.config import get_db
 router = APIRouter()
 
 @router.post("/", response_model= project_schema.Project)
-async def create_project(project: project_schema.Project, db: Session = Depends(get_db)):
+async def create_project(project: project_schema.ProjectCreate, db: Session = Depends(get_db)):
     """
     Creates a new project
 
