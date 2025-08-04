@@ -6,7 +6,7 @@ from schemas import servoboard_schema
 
 
 def create_servoboard(db: Session, servoboard: servoboard_schema.ServoboardSchemaCreate):
-    db_servoboard = Servoboard(id=servoboard.id, name=servoboard.name, ip_address=servoboard.ip_address, )
+    pass
 
 
 def update_servoboard():

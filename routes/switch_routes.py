@@ -6,6 +6,7 @@ from collections import defaultdict
 from crud import switch_crud, switchboard_crud
 from schemas import switch_schema
 from database.config import get_db
+from services import switchboard_api_service
 import requests
 
 
@@ -189,9 +190,35 @@ async def lock_switch(request_data: switch_schema.LockSwitchRequest, db: Session
 @router.post("/toggle/")
 async def toggle_switchs(request_data: switch_schema.ToggleSwitchsRequest, db: Session = Depends(get_db)):
     """
+    Using switchboard_api_service, this function :
+    Receives a json body containing a list of switches and their new state
+    Sends HTTP requests to the switchboards
+    Updates the database
+
+    Args:
+    request_data (switch_schema.ToggleSwitchRequest): The data model containing the switchs and their new state
+    db (Session): A database session
+
+    Returns:
+         response_message: The response sent to the client
+    """
+    errors =  await switchboard_api_service.process_toggle_request(db=db, request_data=request_data)
+
+    response_message = {"message": f"All switches have been processed with {len(errors)} encountered."}
+    if errors:
+        response_message["errors"] = errors
+
+    return response_message
+
+
+@router.post("/legacy_toggle/")
+async def toggle_switchs_legacy(request_data: switch_schema.ToggleSwitchsRequest, db: Session = Depends(get_db)):
+    """
     Receives a json body containing a list of switchs and their new state
     Sends HTTP requests to the switchboards
     Updates the states in the database
+
+    This function has been deprecated and will be removed in a future release. Use toggle_switchs (/toggle/) instead.
 
     Args:
         request_data (switch_schema.ToggleSwitchsRequest): The data model containing the switchs and their new states
@@ -246,6 +273,8 @@ async def toggle_switchs(request_data: switch_schema.ToggleSwitchsRequest, db: S
 
     for switchboard_id, switchs in switchs_by_switchboard.items():
 
+        ######
+
         # Prepares the HTTP request
         payload = {}
         for switch, state in switchs.items():
@@ -265,6 +294,8 @@ async def toggle_switchs(request_data: switch_schema.ToggleSwitchsRequest, db: S
         except requests.RequestException as e:
             errors.append(f"Request error for {db_switchboard.ip_address} : {str(e)}")
             continue
+
+        #######
 
         # Updates the database
         for switch, state in switchs.items():

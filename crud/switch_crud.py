@@ -182,12 +182,6 @@ def get_switch_by_name(db:Session, switch_name:str, switchboard_id:str) -> Optio
 
 
 
-def get_switch_by_position(db:Session, switchboard_id:str, position:int) -> Optional[Switch]:
-    if switchboard_id is None or position is None:
-        pass
-
-
-
 def toggle(db: Session, switch_id: int, state: bool) -> Switch:
     """
     Changes the switch state
